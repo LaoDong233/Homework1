@@ -24,7 +24,7 @@
     <ClCompile Include="docheck.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="show_map.cpp">
+    <ClCompile Include="create_map.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,5 +35,8 @@
     <ClInclude Include="cs.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

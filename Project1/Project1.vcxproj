@@ -22,11 +22,14 @@
     <ClCompile Include="docheck.cpp" />
     <ClCompile Include="dorand.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="show_map.cpp" />
+    <ClCompile Include="create_map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cs.h" />
     <ClInclude Include="func.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
