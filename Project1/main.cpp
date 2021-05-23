@@ -28,6 +28,7 @@ int main(void)
 	}
 	return 0;
 
+
 }
 void check_map(int* map) {
 	for (int p = 0; p < M; p++)
