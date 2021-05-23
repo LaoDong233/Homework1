@@ -24,6 +24,9 @@
     <ClCompile Include="docheck.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="show_map.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="func.h">

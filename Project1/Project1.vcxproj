@@ -22,6 +22,7 @@
     <ClCompile Include="docheck.cpp" />
     <ClCompile Include="dorand.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="show_map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cs.h" />
