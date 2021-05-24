@@ -6,6 +6,10 @@ int docheck(int* map) {
 			b = 0;
 			return 0;
 		}
+		else if (map[i] == 2048)
+		{
+			return 255;
+		}
 		else
 		{
 			b++;

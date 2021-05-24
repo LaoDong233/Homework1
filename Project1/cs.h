@@ -2,9 +2,11 @@
 #define M 16
 #include<stdio.h>
 #include<stdlib.h>
+#include<cstdlib>
+#include<string.h>
 #include<time.h>
 #include <graphics.h>
-#define DEBUG false
+#define DEBUG true
 #if DEBUG
 #define BLOCK ".\\img\\block.png"
 #define BLOCK_ ".\\img\\backblock.png"

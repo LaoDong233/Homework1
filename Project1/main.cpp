@@ -7,51 +7,116 @@ void flush_block(void);
 void check_map(int* map);
 void create_map(void);
 int map[4][4] = { 0 };
-void right(void);
-void upper(void);
-void down(void);
-void left(void);
-int main(void)
+void right(int* score);
+void upper(int* score);
+void down(int* score);
+void left(int* score);
+int main(int* score)
 {
+	int dscore = 0;
+	char cscore[2048] = { 0 };
+	int* ps = &dscore;
 	load_img();
-	create_map();
+	create_map(); 
+	int e = 0;
 	srand((unsigned int)time(0));
 	int* pmap = &map[0][0];
-	dorand(pmap);
-	while (1) {
-		int e = docheck(pmap);
+	for (int i = 0; i < 2; i++)
 		dorand(pmap);
+	setcolor(EGERGB(0x00, 0x00, 0x00));
+	setfont(30, 0, "宋体");
+	setbkmode(TRANSPARENT);
+	outtextxy(860, 250, cscore);
+	sprintf_s(cscore, "%d", dscore);
+	setfillcolor(EGERGB(0x9F, 0xEC, 0xFF));
+	while (1) {
+		bar(817, 255, 989, 280);
+		int xClick, yClick;
+		sprintf_s(cscore, "%d", dscore);
+		outtextxy(860, 250, cscore);
 		check_map(pmap);
-		flush_block();
-		if (e != 0) {
-			printf("you lose the game!");
+		if (e == -1) {
+			system("msg %username% /time:10 \"你失败了\"");
 			system("pause");
 			return 0;
 		}
+		else if (e == 255) {
+			system("msg %username% /time:10 \"你失败了\"");
+			system("pause");
+			return 0;
+		}
+		mouse_msg msg1 = { 0 };
+		while (mousemsg())
+		{
+			msg1 = getmouse();
+		}
+		mousepos(&xClick, &yClick);
+		char str[32];
+		sprintf(str, "%4d %4d", xClick, yClick);
+		if ((int)msg1.is_left() && (int)msg1.is_up()) {
+			if ((xClick > 805 && xClick < 862) && (yClick > 416 && yClick < 477)) {
+				left(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+			}
+			else if ((xClick > 928 && xClick < 982) && (yClick > 416 && yClick < 477)) {
+				right(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+			}
+			else if ((xClick > 870 && xClick < 920) && (yClick > 373 && yClick < 416)) {
+				upper(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+			}
+			else if ((xClick > 870 && xClick < 920) && (yClick > 477 && yClick < 520)) {
+				down(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+			}
+			else if ((xClick > 871 && xClick < 920) && (yClick > 421 && yClick < 473)) {
+				clear_map(pmap);
+				dscore = 0;
+				for (int i = 0; i < 2; i++)
+					dorand(pmap);
+			}
+		}
+		if (kbhit()) {
 		rechar:char mod = getch();
 
-		switch (mod)
-		{
-		case 'a':
-			printf("左\n");
-			left();
-			break;
-		case 's':
-			printf("下\n");
-			down();
-			break;
-		case 'w':
-			printf("上\n");
-			upper();
-			break;
-		case 'd':
-			printf("右\n");
-			right();
-			break;
-		default:
-			goto  rechar;
+			switch (mod)
+			{
+			case 'a':
+				printf("左\n");
+				left(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+				break;
+			case 's':
+				printf("下\n");
+				down(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+				break;
+			case 'w':
+				printf("上\n");
+				upper(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+				break;
+			case 'd':
+				printf("右\n");
+				right(ps);
+				e = docheck(pmap);
+				dorand(pmap);
+				break;
+			default:
+				goto  rechar;
+			}
 		}
+		flush_block();
 	}
+	closegraph();
 	return 0;
 
 
@@ -90,13 +155,13 @@ void load_img(void) {
 		n[i] = newimage();
 	}
 }
-void left(void) {
+void left(int* score) {
 	for (int dd = 0; dd < 3; dd++) {
+		int b = 0;
 		for (int j = 0; j < 4; j++)
 		{
 			for (int i = 3; i > 0; i--)
 			{
-				int b = 0;
 				if (map[j][i - 1] == 0)
 				{
 					map[j][i - 1] = map[j][i];//右面移动到左面
@@ -104,24 +169,30 @@ void left(void) {
 				}
 				else
 				{
-					if (dd ==0 &&map[j][i - 1] == map[j][i]&&b<2)
+					if (dd == 0 && map[j][i - 1] == map[j][i] && b == 0)
 					{
 						map[j][i - 1] = map[j][i - 1] + map[j][i];
 						map[j][i] = 0;
+						*score = *score + map[j][i - 1];
 						b++;
 					}
+					else if (b == 1)
+					{
+						b = 0;
+					}
 				}
+				b = 0;
 			}
 		}
 	}
 }
-void down(void) {
+void down(int* score) {
 	for (int dd = 0; dd < 3; dd++) {
+		int b = 0;
 		for (int j = 0; j < 4; j++)
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				int b = 0;
 				if (map[j + 1][i] == 0 && j != 3)
 				{
 					map[j + 1][i] = map[j][i];//上面移动到下面
@@ -129,24 +200,30 @@ void down(void) {
 				}
 				else
 				{
-					if (map[j + 1][i] == map[j][i] && dd == 0 && b < 2)
+					if (map[j + 1][i] == map[j][i] && dd == 0 && b == 0)
 					{
 						map[j + 1][i] = map[j + 1][i] + map[j][i];
 						map[j][i] = 0;
+						*score = *score + map[j + 1][i];
 						b++;
 					}
+					else if (b == 1)
+					{
+						b = 0;
+					}
 				}
+				b = 0;
 			}
 		}
 	}
 }
-void upper(void) {
+void upper(int* score) {
 	for (int dd = 0; dd < 3; dd++) {
+		int b = 0;
 		for (int j = 3; j > 0; j--)
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				int b = 0;
 				if (map[j - 1][i] == 0)
 				{
 					map[j - 1][i] = map[j][i];//下面移动到上面
@@ -154,24 +231,29 @@ void upper(void) {
 				}
 				else
 				{
-					if (map[j - 1][i] == map[j][i] && dd == 0 && b < 2)
+					if (map[j - 1][i] == map[j][i] && dd == 0 && b == 0)
 					{
 						b++;
 						map[j - 1][i] = map[j - 1][i] + map[j][i];
 						map[j][i] = 0;
+						*score = *score + map[j - 1][i];
+					}
+					else if (b == 1) {
+						b = 0;
 					}
 				}
+				b = 0;
 			}
 		}
 	}
 }
-void right(void) {
+void right(int* score) {
 	for (int dd = 0; dd < 3; dd++) {
+		int b = 0;
 		for (int j = 0; j < 4; j++)
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				int b = 0;
 				if (map[j][i + 1] == 0)
 				{
 					map[j][i + 1] = map[j][i];//左面移动到右面
@@ -179,13 +261,19 @@ void right(void) {
 				}
 				else
 				{
-					if (map[j][i + 1] == map[j][i] && dd == 0 && b < 2)
+					if (map[j][i + 1] == map[j][i] && dd == 0 && b == 0)
 					{
 						b++;
 						map[j][i + 1] = map[j][i + 1] + map[j][i];
 						map[j][i] = 0;
+						*score = *score + map[j][i + 1];
+					}
+					else if (b == 1)
+					{
+						b = 0;
 					}
 				}
+				b = 0;
 			}
 		}
 	}
