@@ -7,6 +7,10 @@ void flush_block(void);
 void check_map(int* map);
 void create_map(void);
 int map[4][4] = { 0 };
+void right(void);
+void upper(void);
+void down(void);
+void left(void);
 int main(void)
 {
 	load_img();
@@ -24,7 +28,29 @@ int main(void)
 			system("pause");
 			return 0;
 		}
-		char mod = getch();
+		rechar:char mod = getch();
+
+		switch (mod)
+		{
+		case 'a':
+			printf("左\n");
+			left();
+			break;
+		case 's':
+			printf("下\n");
+			down();
+			break;
+		case 'w':
+			printf("上\n");
+			upper();
+			break;
+		case 'd':
+			printf("右\n");
+			right();
+			break;
+		default:
+			goto  rechar;
+		}
 	}
 	return 0;
 
@@ -62,6 +88,98 @@ void check_map(int* map) {
 void load_img(void) {
 	for (int i = 0; i < M; i++) {
 		n[i] = newimage();
+	}
+}
+void left(void) {
+	for (int dd = 0; dd < 3; dd++) {
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 3; i > 0; i--)
+			{
+				if (map[j][i - 1] == 0)
+				{
+					map[j][i - 1] = map[j][i];//右面移动到左面
+					map[j][i] = 0;//清空
+				}
+				else
+				{
+					if (map[j][i - 1] == map[j][i])
+					{
+						map[j][i - 1] = map[j][i - 1] + map[j][i];
+						map[j][i] = 0;
+					}
+				}
+			}
+		}
+	}
+}
+void down(void) {
+	for (int dd = 0; dd < 3; dd++) {
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (map[j + 1][i] == 0 && j != 3)
+				{
+					map[j + 1][i] = map[j][i];//上面移动到下面
+					map[j][i] = 0;//清空
+				}
+				else
+				{
+					if (map[j + 1][i] == map[j][i])
+					{
+						map[j + 1][i] = map[j + 1][i] + map[j][i];
+						map[j][i] = 0;
+					}
+				}
+			}
+		}
+	}
+}
+void upper(void) {
+	for (int dd = 0; dd < 3; dd++) {
+		for (int j = 3; j > 0; j--)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (map[j - 1][i] == 0)
+				{
+					map[j - 1][i] = map[j][i];//下面移动到上面
+					map[j][i] = 0;//清空
+				}
+				else
+				{
+					if (map[j - 1][i] == map[j][i])
+					{
+						map[j - 1][i] = map[j - 1][i] + map[j][i];
+						map[j][i] = 0;
+					}
+				}
+			}
+		}
+	}
+}
+void right(void) {
+	for (int dd = 0; dd < 3; dd++) {
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				if (map[j][i + 1] == 0)
+				{
+					map[j][i + 1] = map[j][i];//左面移动到右面
+					map[j][i] = 0;//清空
+				}
+				else
+				{
+					if (map[j][i + 1] == map[j][i])
+					{
+						map[j][i + 1] = map[j][i + 1] + map[j][i];
+						map[j][i] = 0;
+					}
+				}
+			}
+		}
 	}
 }
 void flush_block(void) {
