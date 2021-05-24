@@ -96,6 +96,7 @@ void left(void) {
 		{
 			for (int i = 3; i > 0; i--)
 			{
+				int b = 0;
 				if (map[j][i - 1] == 0)
 				{
 					map[j][i - 1] = map[j][i];//右面移动到左面
@@ -103,10 +104,11 @@ void left(void) {
 				}
 				else
 				{
-					if (map[j][i - 1] == map[j][i])
+					if (dd ==0 &&map[j][i - 1] == map[j][i]&&b<2)
 					{
 						map[j][i - 1] = map[j][i - 1] + map[j][i];
 						map[j][i] = 0;
+						b++;
 					}
 				}
 			}
@@ -119,6 +121,7 @@ void down(void) {
 		{
 			for (int i = 0; i < 4; i++)
 			{
+				int b = 0;
 				if (map[j + 1][i] == 0 && j != 3)
 				{
 					map[j + 1][i] = map[j][i];//上面移动到下面
@@ -126,10 +129,11 @@ void down(void) {
 				}
 				else
 				{
-					if (map[j + 1][i] == map[j][i])
+					if (map[j + 1][i] == map[j][i] && dd == 0 && b < 2)
 					{
 						map[j + 1][i] = map[j + 1][i] + map[j][i];
 						map[j][i] = 0;
+						b++;
 					}
 				}
 			}
@@ -142,6 +146,7 @@ void upper(void) {
 		{
 			for (int i = 0; i < 4; i++)
 			{
+				int b = 0;
 				if (map[j - 1][i] == 0)
 				{
 					map[j - 1][i] = map[j][i];//下面移动到上面
@@ -149,8 +154,9 @@ void upper(void) {
 				}
 				else
 				{
-					if (map[j - 1][i] == map[j][i])
+					if (map[j - 1][i] == map[j][i] && dd == 0 && b < 2)
 					{
+						b++;
 						map[j - 1][i] = map[j - 1][i] + map[j][i];
 						map[j][i] = 0;
 					}
@@ -165,6 +171,7 @@ void right(void) {
 		{
 			for (int i = 0; i < 3; i++)
 			{
+				int b = 0;
 				if (map[j][i + 1] == 0)
 				{
 					map[j][i + 1] = map[j][i];//左面移动到右面
@@ -172,8 +179,9 @@ void right(void) {
 				}
 				else
 				{
-					if (map[j][i + 1] == map[j][i])
+					if (map[j][i + 1] == map[j][i] && dd == 0 && b < 2)
 					{
+						b++;
 						map[j][i + 1] = map[j][i + 1] + map[j][i];
 						map[j][i] = 0;
 					}
