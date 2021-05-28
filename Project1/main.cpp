@@ -1,47 +1,47 @@
 // M == 16
 #include"cs.h"
 #include"func.h"
-PIMAGE n[16];
 void load_img(void);
 void flush_block(void);
 void check_map(int* map);
 void create_map(void);
-int map[4][4] = { 0 };
+int map[4][4] = { 0 };		
+PIMAGE n[16];
 void right(int* score);
 void upper(int* score);
 void down(int* score);
 void left(int* score);
 int main(int* score)
 {
-	int dscore = 0;
+	int dscore = 0;		//创建两个积分用函数，char函数用于打印
 	char cscore[2048] = { 0 };
-	int* ps = &dscore;
-	load_img();
-	create_map(); 
+	int* ps = &dscore;	//创建指针方便修改
+	load_img();		//建立图片变量
+	create_map();		//建立背景图片
 	int e = 0;
-	srand((unsigned int)time(0));
-	int* pmap = &map[0][0];
-	for (int i = 0; i < 2; i++)
+	srand((unsigned int)time(0));		//生成随机数
+	int* pmap = &map[0][0];		//创建地图指针方便调用
+	for (int i = 0; i < 2; i++)		//起始两个随机值生成
 		dorand(pmap);
-	setcolor(EGERGB(0x00, 0x00, 0x00));
-	setfont(30, 0, "宋体");
-	setbkmode(TRANSPARENT);
-	outtextxy(860, 250, cscore);
-	sprintf_s(cscore, "%d", dscore);
-	setfillcolor(EGERGB(0x9F, 0xEC, 0xFF));
+	setcolor(EGERGB(0x00, 0x00, 0x00));		//设置文字颜色
+	setfont(30, 0, "宋体");		//设置字体
+	setbkmode(TRANSPARENT);		//设置文字背景透明
+	outtextxy(860, 250, cscore);	//打印分数
+	sprintf_s(cscore, "%d", dscore);	//将分数转换为字符串
+	setfillcolor(EGERGB(0x9F, 0xEC, 0xFF));	//不要动！！！！！！
 	while (1) {
-		bar(817, 255, 989, 280);
+		bar(817, 255, 989, 280);	//文字逻辑，不要动！！！
 		int xClick, yClick;
 		sprintf_s(cscore, "%d", dscore);
 		outtextxy(860, 250, cscore);
-		check_map(pmap);
+		check_map(pmap);	//判断胜利失败
 		if (e == -1) {
-			system("msg %username% /time:10 \"你失败了\"");
+			system("msg %username% /time:10 \"你失败了\"");	//调用系统弹窗
 			system("pause");
 			return 0;
 		}
 		else if (e == 255) {
-			system("msg %username% /time:10 \"你失败了\"");
+			system("msg %username% /time:10 \"你失败了\"");	//调用系统弹窗
 			system("pause");
 			return 0;
 		}
@@ -50,39 +50,39 @@ int main(int* score)
 		{
 			msg1 = getmouse();
 		}
-		mousepos(&xClick, &yClick);
+		mousepos(&xClick, &yClick);		//调用鼠标位置
 		char str[32];
 		sprintf(str, "%4d %4d", xClick, yClick);
-		if ((int)msg1.is_left() && (int)msg1.is_up()) {
-			if ((xClick > 805 && xClick < 862) && (yClick > 416 && yClick < 477)) {
+		if ((int)msg1.is_left() && (int)msg1.is_up()) {		//检查鼠标左键是否按下
+			if ((xClick > 805 && xClick < 862) && (yClick > 416 && yClick < 477)) {		//检查鼠标是否在左侧
 				left(ps);
 				e = docheck(pmap);
 				dorand(pmap);
 			}
-			else if ((xClick > 928 && xClick < 982) && (yClick > 416 && yClick < 477)) {
+			else if ((xClick > 928 && xClick < 982) && (yClick > 416 && yClick < 477)) {		//检查鼠标是否在右侧
 				right(ps);
 				e = docheck(pmap);
 				dorand(pmap);
 			}
-			else if ((xClick > 870 && xClick < 920) && (yClick > 373 && yClick < 416)) {
+			else if ((xClick > 870 && xClick < 920) && (yClick > 373 && yClick < 416)) {		//检查鼠标是否在上面
 				upper(ps);
 				e = docheck(pmap);
 				dorand(pmap);
 			}
-			else if ((xClick > 870 && xClick < 920) && (yClick > 477 && yClick < 520)) {
+			else if ((xClick > 870 && xClick < 920) && (yClick > 477 && yClick < 520)) {		//检查鼠标是否在下面
 				down(ps);
 				e = docheck(pmap);
 				dorand(pmap);
 			}
-			else if ((xClick > 871 && xClick < 920) && (yClick > 421 && yClick < 473)) {
-				clear_map(pmap);
-				dscore = 0;
-				for (int i = 0; i < 2; i++)
+			else if ((xClick > 871 && xClick < 920) && (yClick > 421 && yClick < 473)) {		//检查鼠标是否在中间
+				clear_map(pmap);		//清除地图内所有数据
+				dscore = 0;				//清除分数
+				for (int i = 0; i < 2; i++)		//重新随机
 					dorand(pmap);
 			}
 		}
-		if (kbhit()) {
-		rechar:char mod = getch();
+		if (kbhit()) {		//非阻塞方式等待
+		rechar:char mod = getch();	//获取按键
 
 			switch (mod)
 			{
@@ -110,18 +110,22 @@ int main(int* score)
 				e = docheck(pmap);
 				dorand(pmap);
 				break;
+			case 'r':
+				clear_map(pmap);
+				dscore = 0;
+				for (int i = 0; i < 2; i++)
+					dorand(pmap);
+				break;
 			default:
 				goto  rechar;
 			}
 		}
-		flush_block();
+		flush_block();	//刷新地图
 	}
-	closegraph();
+	closegraph();		//关闭地图
 	return 0;
-
-
 }
-void check_map(int* map) {
+void check_map(int* map) {		//检察地图位置并填充对应的图片
 	for (int p = 0; p < M; p++)
 	{
 		if (map[p] == 2)
@@ -150,12 +154,12 @@ void check_map(int* map) {
 			getimage(n[p], BLOCK);
 	}
 }
-void load_img(void) {
+void load_img(void) {			//初始化函数
 	for (int i = 0; i < M; i++) {
 		n[i] = newimage();
 	}
 }
-void left(int* score) {
+void left(int* score) {			//向左移动
 	for (int dd = 0; dd < 3; dd++) {
 		int b = 0;
 		for (int j = 0; j < 4; j++)
@@ -186,7 +190,7 @@ void left(int* score) {
 		}
 	}
 }
-void down(int* score) {
+void down(int* score) {		//向下移动
 	for (int dd = 0; dd < 3; dd++) {
 		int b = 0;
 		for (int j = 0; j < 4; j++)
@@ -217,7 +221,7 @@ void down(int* score) {
 		}
 	}
 }
-void upper(int* score) {
+void upper(int* score) {		//向上移动
 	for (int dd = 0; dd < 3; dd++) {
 		int b = 0;
 		for (int j = 3; j > 0; j--)
@@ -247,7 +251,7 @@ void upper(int* score) {
 		}
 	}
 }
-void right(int* score) {
+void right(int* score) {		//向右移动
 	for (int dd = 0; dd < 3; dd++) {
 		int b = 0;
 		for (int j = 0; j < 4; j++)
@@ -278,7 +282,7 @@ void right(int* score) {
 		}
 	}
 }
-void flush_block(void) {
+void flush_block(void) {		//刷新格子上的图片
 	putimage(36, 164, n[0]);
 	putimage(206, 164, n[1]);
 	putimage(376, 164, n[2]);
