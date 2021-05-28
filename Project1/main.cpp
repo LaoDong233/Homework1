@@ -16,8 +16,8 @@ int main(int* score)
 	int dscore = 0;		//创建两个积分用函数，char函数用于打印
 	char cscore[2048] = { 0 };
 	int* ps = &dscore;	//创建指针方便修改
-	load_img();		//建立图片变量
 	create_map();		//建立背景图片
+	load_img();		//建立图片变量
 	int e = 0;
 	srand((unsigned int)time(0));		//生成随机数
 	int* pmap = &map[0][0];		//创建地图指针方便调用
