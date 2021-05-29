@@ -50,7 +50,7 @@ int main(int* score)
 		{
 			msg1 = getmouse();
 		}
-		mousepos(&xClick, &yClick);		//调用鼠标位置
+		mousepos(&xClick, &yClick);		//调用鼠标位置123
 		char str[32];
 		sprintf(str, "%4d %4d", xClick, yClick);
 		if ((int)msg1.is_left() && (int)msg1.is_up()) {		//检查鼠标左键是否按下
